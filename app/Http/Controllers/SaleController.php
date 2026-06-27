@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sale;
-use App\Models\User;
+use App\Http\Requests\SaleRequest;
 use App\Models\Customer;
+use App\Models\Sale;
+use App\Models\SaleBank;
 use App\Models\SaleDetail;
+use App\Models\SaleReturn;
+use App\Models\Table;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use App\Http\Requests\SaleRequest;
-use App\Models\Product;
-use App\Models\SaleBank;
-use App\Models\SaleReturn;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -210,6 +210,12 @@ class SaleController extends Controller
                     ];
                 }
                 SaleBank::insert($bankDetails);
+            }
+
+            if(!empty($sale->table_id)){
+                // table update here
+                $tableIds = explode(',', $sale->table_id);
+                Table::whereIn('id', $tableIds)->update(['order_id' => $data->id, 'table_status' => 'occupied']);
             }
 
             DB::commit();

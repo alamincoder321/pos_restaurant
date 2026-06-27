@@ -87,7 +87,6 @@
                                     <th>Employee</th>
                                     <th>SubTotal</th>
                                     <th>Discount</th>
-                                    <th>Vat</th>
                                     <th>Total</th>
                                     <th>CashPaid</th>
                                     <th>BankPaid</th>
@@ -106,16 +105,17 @@
                                     <td v-html="item.employee_name" class="text-center"></td>
                                     <td v-html="item.subtotal" class="text-end"></td>
                                     <td v-html="item.discount" class="text-end"></td>
-                                    <td v-html="item.vat" class="text-end"></td>
                                     <td v-html="item.total" class="text-end"></td>
                                     <td v-html="item.cashPaid" class="text-end"></td>
                                     <td v-html="item.bankPaid" class="text-end"></td>
                                     <td v-html="item.paid" class="text-end"></td>
                                     <td v-html="item.due" class="text-end"></td>
-                                    <td v-html="item.note" class="text-center"></td>
+                                    <td class="text-center">
+
+                                    </td>
                                     <td class="text-center">
                                         <i @click="openInvoice(item.id)" class="bi bi-file-earmark-medical-fill text-secondary" style="cursor: pointer;font-size:14px"></i>
-                                        <!-- <i @click="editSale(item.id)" class="bi bi-pencil-square text-info" style="cursor: pointer;"></i> -->
+                                        <i @click="editSale(item.id)" class="bi bi-pencil-square text-info" style="cursor: pointer;"></i>
                                         <i @click="deleteData(item.id)" class="bi bi-trash3 text-danger" style="cursor: pointer;"></i>
                                     </td>
                                 </tr>
@@ -123,7 +123,6 @@
                                     <th v-html="`Total`" colspan="5" class="text-end"></th>
                                     <th v-html="sales.reduce((pr, cu) => {return pr + parseFloat(cu.subtotal)}, 0).toFixed(2)" class="text-end"></th>
                                     <th v-html="sales.reduce((pr, cu) => {return pr + parseFloat(cu.discount)}, 0).toFixed(2)" class="text-end"></th>
-                                    <th v-html="sales.reduce((pr, cu) => {return pr + parseFloat(cu.vat)}, 0).toFixed(2)" class="text-end"></th>
                                     <th v-html="sales.reduce((pr, cu) => {return pr + parseFloat(cu.total)}, 0).toFixed(2)" class="text-end"></th>
                                     <th v-html="sales.reduce((pr, cu) => {return pr + parseFloat(cu.cashPaid)}, 0).toFixed(2)" class="text-end"></th>
                                     <th v-html="sales.reduce((pr, cu) => {return pr + parseFloat(cu.bankPaid)}, 0).toFixed(2)" class="text-end"></th>
@@ -133,7 +132,7 @@
                                     <th></th>
                                 </tr>
                                 <tr :class="sales.length == 0 ? '' : 'd-none'" v-if="sales.length == 0">
-                                    <td colspan="15" class="text-center">Not Found Data</td>
+                                    <td colspan="14" class="text-center">Not Found Data</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -221,6 +220,10 @@
             isLoading: null
         },
 
+        created() {
+            this.showReport();
+        },
+
         methods: {
             openInvoice(id) {
                 if (typeof window !== 'undefined') {
@@ -229,7 +232,7 @@
             },
             editSale(id) {
                 if (typeof window !== 'undefined') {
-                    window.open('/sale/' + id, '_blank');
+                    window.open('/pos/' + id, '_blank');
                 }
             },
             getUser() {

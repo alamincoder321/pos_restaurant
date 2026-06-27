@@ -251,7 +251,7 @@ Route::post('/delete-invest-transaction', [InvestTransactionController::class, '
 
 // ============================= Sale Panel Route ==============================
 // sale route
-Route::get('/pos', [SaleController::class, 'pos'])->name('pos.sale.create');
+Route::get('/pos/{id?}', [SaleController::class, 'pos'])->name('pos.sale.create');
 Route::get('/sale/{id?}', [SaleController::class, 'create'])->name('sale.create');
 Route::get('/sale-record', [SaleController::class, 'saleRecord'])->name('sale.record');
 Route::match(['get', 'post'], '/get-sale', [SaleController::class, 'index'])->name('sale.index');

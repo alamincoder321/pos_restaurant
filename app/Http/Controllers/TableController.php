@@ -105,6 +105,9 @@ class TableController extends Controller
             $data->updated_by = $this->userId;
             $data->ipAddress = request()->ip();
             $data->branch_id = $this->branchId;
+            if($request->table_status == 'available'){
+                $data->order_id = NULL;
+            }
             $data->update();
 
             return response()->json(['status' => true, 'message' => "Table has updated successfully"]);

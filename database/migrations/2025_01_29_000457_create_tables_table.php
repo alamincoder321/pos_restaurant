@@ -19,6 +19,8 @@ class CreateTablesTable extends Migration
             $table->foreignId('floor_id')->nullable()->constrained('floors', 'id');
             $table->integer('capacity')->default(0);
             $table->text('description')->nullable();
+            $table->string('table_status', 50)->default('available')->comment('available, occupied, reserved, cleaning');
+            $table->string('order_id', 50)->nullable();
             $table->char('status', 1)->default('a');
             $table->foreignId('created_by')->nullable()->constrained('users', 'id');
             $table->dateTime('created_at')->useCurrent();

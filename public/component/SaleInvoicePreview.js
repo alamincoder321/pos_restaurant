@@ -15,7 +15,7 @@ Vue.component('invoice-preview', {
 
       <div style="display: flex; align-items: center; text-align: center; margin: 0;">
         <div style="flex: 1; border-bottom: 1px solid #000;"></div>
-        <div style="padding: 0 15px; font-size: 18px; font-weight: 700;">Sale Invoice</div>
+        <div style="padding: 0 15px; font-size: 18px; font-weight: 700;">Order Invoice</div>
         <div style="flex: 1; border-bottom: 1px solid #000;"></div>
       </div>
 

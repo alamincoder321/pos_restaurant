@@ -32,6 +32,16 @@
                                     <input type="number" min="0" class="form-control" autocomplete="off" id="capacity" name="capacity" v-model="table.capacity" />
                                 </div>
                             </div>
+                            <div class="mb-1 row" v-if="table.id != ''" :class="table.id != '' ? '' : 'd-none'">
+                                <label class="form-label col-4 col-md-3" for="table_status">Status:</label>
+                                <div class="col-8 col-md-9">
+                                    <select class="form-select" id="table_status" name="table_status" v-model="table.table_status">
+                                        <option value="available">Available</option>
+                                        <option value="occupied">Occupied</option>
+                                        <option value="reserved">Reserved</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="mt-1 text-end">
                                 <button class="btn btn-danger" type="button">Reset</button>
                                 <button class="btn btn-primary" type="submit" :disabled="onProgress">
@@ -85,6 +95,10 @@
                         field: 'capacity'
                     },
                     {
+                        label: "Status",
+                        field: 'table_status_txt'
+                    },
+                    {
                         label: "Added_By",
                         field: 'ad_user.username'
                     },
@@ -102,6 +116,7 @@
                     name: '',
                     floor_id: '',
                     capacity: '',
+                    table_status: 'available'
                 },
                 tables: [],
                 floors: [],
@@ -124,7 +139,10 @@
             getTable() {
                 axios.post('/get-table')
                     .then(res => {
-                        this.tables = res.data;
+                        this.tables = res.data.map(item => {
+                            item.table_status_txt = item.table_status.charAt(0).toUpperCase() + item.table_status.slice(1);
+                            return item;
+                        });
                     })
             },
             saveData(event) {

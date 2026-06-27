@@ -146,17 +146,17 @@
                     <div class="col-8 col-md-2 mb-1 mb-md-0">
                         <input type="text" readonly class="form-control" autocomplete="off" id="invoice" name="invoice" v-model="sale.invoice" />
                     </div>
-                    <label class="form-label col-4 col-md-1 mb-md-0" for="name">Employee:</label>
+                    <label class="form-label col-4 col-md-1 mb-md-0" for="name">Waiter:</label>
                     <div class="col-8 col-md-2 mb-1 mb-md-0">
                         <v-select :options="employees" v-model="selectedEmployee" label="display_name"></v-select>
                     </div>
-                    <label class="form-label col-4 col-md-1 mb-md-0" for="name">AddBy:</label>
+                    <label class="form-label col-4 col-md-1 mb-md-0" for="name">Added By:</label>
                     <div class="col-8 col-md-2 mb-1 mb-md-0">
                         <input type="text" readonly class="form-control" autocomplete="off" id="name" value="{{auth()->user()->name}}" />
                     </div>
                     <label class="form-label col-4 col-md-1 mb-md-0" for="name">Date:</label>
                     <div class="col-8 col-md-2 mb-1 mb-md-0">
-                        <input type="date" class="form-control" autocomplete="off" id="date" name="date" v-model="sale.date" />
+                        <input type="date" class="form-control" autocomplete="off" id="date" name="date" v-model="sale.date" {{auth()->user()->role == 'waiter' ? 'disabled' : ''}} />
                     </div>
                 </div>
             </div>
@@ -599,6 +599,10 @@
             this.getBank();
             this.getCustomer();
             this.getMenu();
+
+            if (this.sale.id != '') {
+                await this.getSale();
+            }
         },
 
         methods: {
@@ -664,7 +668,11 @@
             getTable() {
                 axios.get('/get-table')
                     .then(res => {
-                        this.tables = res.data;
+                        if (this.sale.id != '') {
+                            this.tables = res.data;
+                        } else {
+                            this.tables = res.data.filter(item => item.order_id == null);
+                        }
                     })
             },
             getCategory() {
@@ -1069,6 +1077,62 @@
                 this.selectedEmployee = null;
                 this.carts = [];
                 this.getCustomer();
+                this.getTable();
+            },
+
+            async getSale() {
+                await axios.post('/get-sale', {
+                    saleId: this.sale.id
+                }).then(res => {
+                    let sale = res.data[0];
+                    let saleKeys = Object.keys(this.sale);
+                    saleKeys.forEach(key => {
+                        this.sale[key] = sale[key];
+                    })
+
+                    this.selectedTable = sale.table_id ?
+                        sale.table_id.split(',').map(id => parseInt(id)) :
+                        [];
+
+                    sale.details.map(item => {
+                        let detail = {
+                            id: item.menu_id,
+                            code: item.code,
+                            category_name: item.category_name,
+                            name: item.name,
+                            unit_name: item.unit_name,
+                            purchase_rate: item.purchase_rate,
+                            sale_rate: item.sale_rate,
+                            quantity: item.quantity,
+                            total: item.total
+                        };
+                        this.carts.push(detail);
+                    })
+                    sale.bank_details.map(item => {
+                        let detail = {
+                            id: item.bank_id,
+                            bank_name: item.bank_name,
+                            number: item.number,
+                            last_digit: item.last_digit,
+                            amount: item.amount
+                        };
+                        this.bankCart.push(detail);
+                    })
+
+                    this.selectedCustomer = {
+                        id: sale.customer_id ?? '',
+                        name: sale.customer_name,
+                        phone: sale.customer_phone,
+                        address: sale.customer_address,
+                        display_name: sale.customer_type == 'general' ? 'Walk In Customer' : `${sale.customer_name} - ${sale.customer_phone} - ${sale.customer_address}`,
+                        type: sale.customer_type
+                    }
+
+                    setTimeout(() => {
+                        this.selectedEmployee = this.employees.find(item => item.id == sale.employee_id);
+                        this.sale.previous_due = sale.previous_due;
+                    }, 1500);
+                })
             }
         },
     })
