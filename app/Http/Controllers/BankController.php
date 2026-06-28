@@ -174,6 +174,7 @@ class BankController extends Controller
                 from sale_banks sb
                 join sales sm on sm.id = sb.sale_id
                 where sb.status = 'a'
+                and sm.order_status = 'completed'
                 " . (empty($request->bankId) ? "" : " and sb.bank_id = '$request->bankId'") . "
                 " . ($branchId == null ? "" : " and sb.branch_id = '$branchId'") . "
 

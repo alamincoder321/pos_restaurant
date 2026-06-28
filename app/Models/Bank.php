@@ -43,6 +43,7 @@ class Bank extends Model
                     (select ifnull(sum(sb.amount), 0) from sale_banks sb
                     join sales sm on sm.id = sb.id
                     where sb.status = 'a'
+                    and sm.order_status = 'completed'
                     and sb.bank_id = ba.id
                     " . ($date == null ? "" : " and sm.date <= '$date'") . "
                     " . ($branchId == null ? "" : " and sm.branch_id = '$branchId'") . ") as receive_sale,

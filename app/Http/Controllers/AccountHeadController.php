@@ -154,6 +154,8 @@ class AccountHeadController extends Controller
                 0 as balance
                 from sales sm
                 where sm.status = 'a'
+                and sm.order_status = 'completed'
+                and sm.cashPaid > 0
                 " . ($branchId == null ? "" : " and sm.branch_id = '$branchId'") . "
 
                 UNION

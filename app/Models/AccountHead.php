@@ -39,6 +39,7 @@ class AccountHead extends Model
                 /* Received */
                 (select ifnull(sum(sm.cashPaid - sm.returnAmount), 0) from sales sm
                 where sm.status = 'a'
+                and sm.order_status = 'completed'
                 and sm.cashPaid > 0
                 " . ($date == null ? "" : " and sm.date <= '$date'") . "
                 " . ($branchId == null ? "" : " and sm.branch_id = '$branchId'") . ") as receive_sale,
