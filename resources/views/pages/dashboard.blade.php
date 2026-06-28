@@ -105,6 +105,18 @@ $panel = session('panel');
                 </a>
             </div>
             @endif
+            @if(checkAccess('pendingsaleRecord'))
+            <div class="col-md-2 col-6 mb-3">
+                <a href="/pending-sale-record">
+                    <div class="card mb-0 displayFlex">
+                        <div class="card-body p-3">
+                            <i class="bi bi-file-text"></i>
+                            <span>Pending Order Record</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endif
             @if(checkAccess('saleRecord'))
             <div class="col-md-2 col-6 mb-3">
                 <a href="/sale-record">

@@ -92,28 +92,30 @@
                                     <th>BankPaid</th>
                                     <th>Paid</th>
                                     <th>Due</th>
-                                    <th>Note</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(item, index) in sales" :class="sales.length > 0 ? '' : 'd-none'" v-if="sales.length > 0">
-                                    <td v-html="index + 1"></td>
-                                    <td v-html="item.invoice" class="text-center"></td>
-                                    <td v-html="item.date" class="text-center"></td>
-                                    <td v-html="item.customer_name" class="text-center"></td>
-                                    <td v-html="item.employee_name" class="text-center"></td>
-                                    <td v-html="item.subtotal" class="text-end"></td>
-                                    <td v-html="item.discount" class="text-end"></td>
-                                    <td v-html="item.total" class="text-end"></td>
-                                    <td v-html="item.cashPaid" class="text-end"></td>
-                                    <td v-html="item.bankPaid" class="text-end"></td>
-                                    <td v-html="item.paid" class="text-end"></td>
-                                    <td v-html="item.due" class="text-end"></td>
-                                    <td class="text-center">
-
+                                    <td v-html="index + 1" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.invoice" class="text-center" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.date" class="text-center" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.customer_name" class="text-center" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.employee_name" class="text-center" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.subtotal" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.discount" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.total" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.cashPaid" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.bankPaid" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.paid" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.due" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td class="text-center" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''">
+                                        <span
+                                            :class="item.order_status == 'completed' ? 'text-success' : (item.order_status == 'cancelled' ? 'text-danger' : (item.order_status == 'ready' ? 'text-primary' : 'text-warning'))"
+                                            v-html="item.order_status == 'completed' ? 'Completed' : (item.order_status == 'cancelled' ? 'Cancelled' : (item.order_status == 'ready' ? 'Ready' : 'Pending'))"></span>
                                     </td>
-                                    <td class="text-center">
+                                    <td class="text-center" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''">
                                         <i @click="openInvoice(item.id)" class="bi bi-file-earmark-medical-fill text-secondary" style="cursor: pointer;font-size:14px"></i>
                                         <i @click="editSale(item.id)" class="bi bi-pencil-square text-info" style="cursor: pointer;"></i>
                                         <i @click="deleteData(item.id)" class="bi bi-trash3 text-danger" style="cursor: pointer;"></i>
@@ -268,7 +270,8 @@
                     userId: this.selectedUser ? this.selectedUser.id : '',
                     customerId: this.selectedCustomer ? this.selectedCustomer.id : '',
                     dateFrom: this.dateFrom,
-                    dateTo: this.dateTo
+                    dateTo: this.dateTo,
+                    orderStatus: ['completed', 'cancelled', 'pending', 'ready']
                 }
                 this.isLoading = false;
                 axios.post('/get-sale', filter)

@@ -75,6 +75,14 @@ $panel = session('panel');
             </a>
         </li>
         @endif
+        @if(checkAccess('pendingsaleRecord'))
+        <li class="nav-item">
+            <a class="nav-link {{Request::is('pending-sale-record') ? 'active' : ''}}" href="/pending-sale-record">
+                <i class="bi bi-file-text"></i>
+                <span>Pending Order Record</span>
+            </a>
+        </li>
+        @endif
         @if(checkAccess('saleRecord'))
         <li class="nav-item">
             <a class="nav-link {{Request::is('sale-record') ? 'active' : ''}}" href="/sale-record">

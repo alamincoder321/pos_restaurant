@@ -254,7 +254,9 @@ Route::post('/delete-invest-transaction', [InvestTransactionController::class, '
 Route::get('/pos/{id?}', [SaleController::class, 'pos'])->name('pos.sale.create');
 Route::get('/sale/{id?}', [SaleController::class, 'create'])->name('sale.create');
 Route::get('/sale-record', [SaleController::class, 'saleRecord'])->name('sale.record');
+Route::get('/pending-sale-record', [SaleController::class, 'pendingSaleRecord'])->name('sale.pending.record');
 Route::match(['get', 'post'], '/get-sale', [SaleController::class, 'index'])->name('sale.index');
+Route::match(['get', 'post'], '/sale-status-change', [SaleController::class, 'statusChange'])->name('sale.status.change');
 Route::post('/sale', [SaleController::class, 'store'])->name('sale.store');
 Route::post('/update-sale', [SaleController::class, 'update'])->name('sale.update');
 Route::post('/delete-sale', [SaleController::class, 'destroy'])->name('sale.delete');

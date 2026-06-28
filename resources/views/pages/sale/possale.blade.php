@@ -436,10 +436,10 @@
                             </div>
                             <div class="form-group row mt-1">
                                 <div class="col-md-6 mb-2 mb-md-0">
-                                    <button type="submit" class="btn w-100 btn-success" style="height: 57px;">Save</button>
+                                    <button type="submit" :disabled="onProgress" class="btn w-100 btn-success" style="height: 57px;">Save</button>
                                 </div>
                                 <div class="col-md-6">
-                                    <button type="button" @click="previewInvoice" class="btn w-100 btn-warning text-white" style="height: 57px;">Save & Print</button>
+                                    <button type="button" :disabled="onProgress" @click="previewInvoice" class="btn w-100 btn-warning text-white" style="height: 57px;">Save & Print</button>
                                 </div>
                             </div>
                         </div>
@@ -1091,8 +1091,7 @@
                     })
 
                     this.selectedTable = sale.table_id ?
-                        sale.table_id.split(',').map(id => parseInt(id)) :
-                        [];
+                        sale.table_id.split(',').map(id => parseInt(id)) : [];
 
                     sale.details.map(item => {
                         let detail = {
@@ -1135,6 +1134,19 @@
                 })
             }
         },
+
+        mounted() {
+            let vm = this;
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key == 'c') {
+                    e.preventDefault();
+                    document.querySelector("#customer [type='search']").focus();
+                } else if (e.ctrlKey && e.key == 'Enter') {
+                    e.preventDefault();
+                    vm.saveData(event);
+                }
+            });
+        }
     })
 </script>
 @endpush

@@ -27,8 +27,7 @@ class SaleRequest extends FormRequest
             'sale.invoice' => 'required',
             'sale.date' => 'required',
             'sale.paid' => 'required',
-            'carts' => 'required|array',
-            'sale.table_id' => 'required'
+            'carts' => 'required|array'
         ];
 
         if ($this->customer['type'] == 'new') {
@@ -50,7 +49,6 @@ class SaleRequest extends FormRequest
             'sale.paid.required' => 'Sale paid required',
             'customer.name.required' => 'Customer name required',
             'customer.phone.required' => 'Customer phone required',
-            'sale.table_id.required' => 'Table required',
         ];
     }
 }

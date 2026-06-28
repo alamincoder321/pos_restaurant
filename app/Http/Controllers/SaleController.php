@@ -42,6 +42,9 @@ class SaleController extends Controller
         if (!empty($request->userId)) {
             $sales->where('created_by', $request->userId);
         }
+        if (!empty($request->orderStatus)) {
+            $sales->whereIn('order_status', $request->orderStatus);
+        }
         if (!empty($request->dateFrom) && !empty($request->dateTo)) {
             $sales->whereBetween('date', [$request->dateFrom, $request->dateTo]);
         }
@@ -133,7 +136,7 @@ class SaleController extends Controller
             $invoice = Sale::where('invoice', $sale->invoice)->first();
             if (empty($invoice)) {
                 $invoice = invoiceGenerate('Sale', '', $this->branchId);
-            }else{
+            } else {
                 $invoice = $invoice->invoice;
             }
             if (!empty($customer) && $customer->type == 'new') {
@@ -212,7 +215,7 @@ class SaleController extends Controller
                 SaleBank::insert($bankDetails);
             }
 
-            if(!empty($sale->table_id)){
+            if (!empty($sale->table_id)) {
                 // table update here
                 $tableIds = explode(',', $sale->table_id);
                 Table::whereIn('id', $tableIds)->update(['order_id' => $data->id, 'table_status' => 'occupied']);
@@ -361,12 +364,51 @@ class SaleController extends Controller
         }
     }
 
+    public function statusChange(Request $request)
+    {
+        try {
+            $data               = Sale::find($request->id);
+            $data->order_status = $request->status;
+            $data->updated_by   = $this->userId;
+            $data->ipAddress    = request()->ip();
+            $data->update();
+
+            if ($request->status == 'cancelled') {
+                SaleDetail::where('sale_id', $request->id)->update([
+                    'status' => 'c',
+                    'ipAddress' => request()->ip(),
+                ]);
+                SaleBank::where('sale_id', $request->id)->update([
+                    'status' => 'c',
+                    'ipAddress' => request()->ip()
+                ]);
+            }
+
+            if(!empty($data->table_id)) {
+                $tableIds = explode(',', $data->table_id);
+                Table::whereIn('id', $tableIds)->update(['order_id' => NULL, 'table_status' => 'available']);
+            }
+
+            return response()->json(['status' => true, 'message' => "Order status has been changed to {$request->status} successfully"]);
+        } catch (\Throwable $th) {
+            return send_error("Something went wrong", $th->getMessage());
+        }
+    }
+
     public function saleRecord()
     {
         if (!checkAccess('saleRecord')) {
             return view('error.403');
         }
         return view("pages.sale.index");
+    }
+
+    public function pendingSaleRecord()
+    {
+        if (!checkAccess('pendingSaleRecord')) {
+            return view('error.403');
+        }
+        return view("pages.sale.pendingsale");
     }
 
     public function saleInvoice($id)
