@@ -38,7 +38,7 @@ class CreateSalesTable extends Migration
             $table->enum('sale_type', ['retail', 'wholesale'])->default('retail')->index();
             $table->text('note')->nullable();
             $table->string('order_type', 50)->default('dine-in')->comment('dine-in, take-away, delivery');
-            $table->string('order_status', 50)->default('pending')->comment('pending, preparing, served, completed, cancelled');
+            $table->enum('order_status', ['pending', 'preparing', 'served', 'completed', 'cancelled'])->default('pending')->comment('pending, preparing, served, completed, cancelled');
             $table->char('status', 1)->default('a');
             $table->foreignId('created_by')->nullable()->constrained('users', 'id');
             $table->dateTime('created_at')->useCurrent();
