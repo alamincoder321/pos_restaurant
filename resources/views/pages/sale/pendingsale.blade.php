@@ -92,7 +92,7 @@
                                     Invoice #@{{ sale.invoice }}
                                 </div>
                                 <div class="card-body">
-                                    <p><strong><i class="bi bi-calendar3"></i> Date</strong> : @{{ sale.date }}</p>
+                                    <p><strong><i class="bi bi-calendar3"></i> Date</strong> : @{{ sale.date | dateFormat('DD/MM/YYYY') }}</p>
                                     <p><strong><i class="bi bi-person"></i> Customer</strong> : @{{ sale.customer_name }}</p>
                                     <p><strong><i class="bi bi-telephone"></i> Phone</strong> : @{{ sale.customer_phone }}</p>
                                     <p><strong><i class="bi bi-geo-alt"></i> Address</strong> : @{{ sale.customer_address }}</p>
@@ -137,6 +137,12 @@
             users: [],
             selectedUser: null,
             isLoading: null
+        },
+
+        filters: {
+            dateFormat(d, format) {
+                return moment(d).format(format);
+            }
         },
 
         created() {
@@ -194,10 +200,16 @@
                         id: saleId,
                         status: status
                     })
-                    .then(res => {
+                    .then(async res => {
                         if (res.data.status) {
                             toastr.success(res.data.message);
                             this.showReport();
+                            if (status == 'completed') {
+                                if (confirm('Do you want to print the invoice?')) {
+                                    let printWindow = window.open('/saleInvoice/' + saleId, '_blank');
+                                    printWindow.focus();
+                                }
+                            }
                         }
                     })
             }
