@@ -498,20 +498,20 @@
             </div>
         </div>
     </div>
-    <invoice-preview
+    <kitchen-invoice-preview
         :visible="showInvoice"
         :showable="showInvoice"
         :cart="carts"
         :customer="selectedCustomer"
         :sale="sale"
         :username="username"
-        @close="showInvoice = false"
-        style="display:none;"></invoice-preview>
+        @close="showInvoice = false">
+    </kitchen-invoice-preview>
 </div>
 @endsection
 
 @push("js")
-<script src="{{asset('component')}}/SaleInvoicePreview.js"></script>
+<script src="{{asset('component')}}/KitchenSaleInvoicePreview.js"></script>
 <script>
     new Vue({
         el: "#sale",
@@ -638,26 +638,34 @@
                     toastr.error("Cart is empty");
                     return;
                 }
-                for (const item of this.carts) {
-                    try {
-                        if (item.is_service != '1') {
-                            const res = await axios.post('/get-currentStock', {
-                                productId: item.id
-                            });
-                            let stock = res.data.length > 0 ? res.data[0].stock : 0;
-
-                            if (parseFloat(item.quantity) > parseFloat(stock)) {
-                                toastr.error(`Unavailable stock for this product: ${item.name}`);
-                                return;
+                if(this.checkStock == 'yes'){
+                    for (const item of this.carts) {
+                        try {
+                            if (item.is_service != '1') {
+                                const res = await axios.post('/get-currentStock', {
+                                    productId: item.id
+                                });
+                                let stock = res.data.length > 0 ? res.data[0].stock : 0;
+    
+                                if (parseFloat(item.quantity) > parseFloat(stock)) {
+                                    toastr.error(`Unavailable stock for this product: ${item.name}`);
+                                    return;
+                                }
                             }
+                        } catch (error) {
+                            toastr.error(`Error checking stock for ${item.name}`);
+                            return;
                         }
-                    } catch (error) {
-                        toastr.error(`Error checking stock for ${item.name}`);
-                        return;
                     }
                 }
-                await this.saveData();
-                this.showInvoice = true;
+                let saleId = await this.saveData();
+                
+                const mediaQuery = window.matchMedia("(min-width: 300px) and (max-width: 1366px)");
+                if (!mediaQuery.matches) {
+                    this.showInvoice = true;
+                }else{
+                    location.href = `/kitchenInvoice/${saleId}?print=1`;
+                }
             },
             handleTabPress(e) {
                 if (e.key === 'Tab' && !e.shiftKey) {

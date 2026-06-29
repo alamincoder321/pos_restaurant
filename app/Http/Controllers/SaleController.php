@@ -415,4 +415,14 @@ class SaleController extends Controller
     {
         return view("pages.sale.saleInvoice", compact('id'));
     }
+
+    public function possaleInvoice($id)
+    {
+        return view("pages.sale.possaleInvoice", compact('id'));
+    }
+
+    public function kitchenInvoice($id)
+    {
+        return view("pages.sale.kitchenInvoice", compact('id'));
+    }
 }

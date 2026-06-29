@@ -1,7 +1,7 @@
 @extends('master')
 
-@section('title', 'Order Invoice')
-@section('breadcrumb', 'Order Invoice')
+@section('title', 'Kitchen Sale Invoice')
+@section('breadcrumb', 'Kitchen Sale Invoice')
 @push('style')
 <style>
     tr td,
@@ -12,29 +12,21 @@
 @endpush
 @section('content')
 <div id="saleInvoice">
-    <div class="card py-5">
-        <div class="col-md-10 offset-md-1">
-            <div class="d-flex justify-content-between align-items-center">
-                <a class="btn btn-danger btn-sm" onclick="window.close();"><i class="bi bi-backspace"></i> Back</a>
-                <a class="btn btn-success btn-sm" href="" @click.prevent="printInvoice = true" title="Print"><i class="bi bi-printer"></i> Print</a>
-            </div>
-        </div>
-        <div class="col-md-10 offset-md-1">
-            <invoice-preview
-                :visible="printInvoice"
-                :showable="showInvoice"
-                :cart="carts"
-                :customer="selectedCustomer"
-                :sale="sale"
-                :username="username"
-                @close="printInvoice = false"></invoice-preview>
-        </div>
+    <div class="col-md-10 offset-md-1">
+        <kitchen-invoice-preview
+            :visible="printInvoice"
+            :showable="showInvoice"
+            :cart="carts"
+            :customer="selectedCustomer"
+            :sale="sale"
+            :username="username"
+            @close="printInvoice = false"></kitchen-invoice-preview>
     </div>
 </div>
 @endsection
 
 @push('js')
-<script src="{{asset('component')}}/SaleInvoicePreview.js"></script>
+<script src="{{asset('component')}}/KitchenInvoicePreview.js"></script>
 <script>
     new Vue({
         el: '#saleInvoice',
@@ -46,7 +38,8 @@
             username: "",
             showInvoice: false,
             printInvoice: 1,
-            isLoading: null
+            isLoading: null,
+            isPrint: null
         },
 
         created() {
@@ -54,7 +47,7 @@
         },
 
         methods: {
-            showReport() {
+            async showReport() {
                 axios.post('/get-sale', {
                         saleId: this.saleId
                     })

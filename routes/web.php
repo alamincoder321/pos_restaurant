@@ -261,6 +261,8 @@ Route::post('/sale', [SaleController::class, 'store'])->name('sale.store');
 Route::post('/update-sale', [SaleController::class, 'update'])->name('sale.update');
 Route::post('/delete-sale', [SaleController::class, 'destroy'])->name('sale.delete');
 Route::get('/saleInvoice/{id}', [SaleController::class, 'saleInvoice'])->name('sale.invoice');
+Route::get('/possaleInvoice/{id}', [SaleController::class, 'possaleInvoice'])->name('possale.invoice');
+Route::get('/kitchenInvoice/{id}', [SaleController::class, 'kitchenInvoice'])->name('kitchen.invoice');
 
 // sale return route
 Route::post('/get-sale-detailforreturns', [SaleReturnController::class, 'getDetailForReturns'])->name('get.sale.detailforreturns');

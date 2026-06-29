@@ -111,7 +111,7 @@
                         </div>
                         <div class="col-md-12" v-if="sales.length == 0">
                             <div class="alert alert-info text-center mb-0">
-                                No pending sales found.
+                                No pending order found.
                             </div>
                         </div>
                     </div>
@@ -206,7 +206,7 @@
                             this.showReport();
                             if (status == 'completed') {
                                 if (confirm('Do you want to print the invoice?')) {
-                                    let printWindow = window.open('/saleInvoice/' + saleId, '_blank');
+                                    location.href = `/possaleInvoice/${saleId}?print=1`;
                                     printWindow.focus();
                                 }
                             }
