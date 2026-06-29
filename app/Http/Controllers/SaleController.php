@@ -92,6 +92,10 @@ class SaleController extends Controller
             $employee = User::where('id', $sale->employee_id)->where('branch_id', $this->branchId)->withTrashed()->first();
             $sale->employee_name = $employee->name ?? "NA";
 
+            $tableIds = explode(',', $sale->table_id);
+            $tables = Table::whereIn('id', $tableIds)->where('branch_id', $this->branchId)->withTrashed()->get();
+            $sale->table_name = $tables->pluck('name')->implode(', ');
+
             $sale->display_name = $sale->invoice . ' - ' . $sale->customer_name;
             return $sale;
         }, $sales);
@@ -161,6 +165,7 @@ class SaleController extends Controller
             $dataKey = $sale;
             unset($dataKey->id);
             unset($dataKey->invoice);
+            unset($dataKey->table_name);
             $data = new Sale();
             $data->invoice = $invoice;
             $data->employee_id = $sale->employee_id ?? NULL;

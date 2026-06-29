@@ -1019,6 +1019,7 @@
             saveData() {
                 this.sale.employee_id = this.selectedEmployee ? this.selectedEmployee.id : "";
                 this.sale.table_id = this.selectedTable.length > 0 ? this.selectedTable.map(item => item).join(',') : null;
+                this.sale.table_name = this.tables.filter(item => this.selectedTable.includes(item.id)).map(item => item.name).join(', ');
                 let formdata = {
                     sale: this.sale,
                     customer: this.selectedCustomer,
