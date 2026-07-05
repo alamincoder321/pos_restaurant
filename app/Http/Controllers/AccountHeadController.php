@@ -188,52 +188,6 @@ class AccountHeadController extends Controller
                 where bt.status = 'a'
                 and bt.type = 'debit'
                 " . ($branchId == null ? "" : " and bt.branch_id = '$branchId'") . "
-
-                UNION
-                select
-                'd' as sequence,
-                spr.id,
-                spr.date,
-                spr.created_at,
-                concat('Supplier Receive - ', spr.invoice) as description,
-                spr.amount as in_amount,
-                0 as out_amount,
-                0 as balance
-                from receives spr
-                where spr.status = 'a'
-                and spr.type = 'supplier'
-                and spr.payment_method = 'cash'
-                " . ($branchId == null ? "" : " and spr.branch_id = '$branchId'") . "
-                
-                UNION
-                select
-                'e' as sequence,
-                pr.id,
-                pr.date,
-                pr.created_at,
-                concat('Purchase Return Invoice - ', pr.invoice) as description,
-                pr.total as in_amount,
-                0 as out_amount,
-                0 as balance
-                from purchase_returns pr
-                where pr.status = 'a'
-                and pr.supplier_id is null
-                " . ($branchId == null ? "" : " and pr.branch_id = '$branchId'") . "
-
-                UNION
-                select
-                'f' as sequence,
-                dm.id,
-                dm.date,
-                dm.created_at,
-                concat('Damage Invoice - ', dm.invoice) as description,
-                dm.total as in_amount,
-                0 as out_amount,
-                0 as balance
-                from damages dm
-                where dm.status = 'a'
-                and dm.supplier_id is null
-                " . ($branchId == null ? "" : " and dm.branch_id = '$branchId'") . "
                 
                 UNION
                 select
@@ -265,37 +219,7 @@ class AccountHeadController extends Controller
                 where it.status = 'a'
                 " . ($branchId == null ? "" : " and it.branch_id = '$branchId'") . "
 
-                /*================= Out Amount =======================*/
-                UNION
-                select
-                'i' as sequence,
-                pm.id,
-                pm.date,
-                pm.created_at,
-                concat('Purchase Invoice - ', pm.invoice) as description,
-                0 as in_amount,
-                pm.paid as out_amount,
-                0 as balance
-                from purchases pm
-                where pm.status = 'a'
-                " . ($branchId == null ? "" : " and pm.branch_id = '$branchId'") . "
-
-                UNION
-                select
-                'j' as sequence,
-                spp.id,
-                spp.date,
-                spp.created_at,
-                concat('Supplier Payment - ', spp.invoice) as description,
-                0 as in_amount,
-                spp.amount as out_amount,
-                0 as balance
-                from payments spp
-                where spp.status = 'a'
-                and spp.type = 'supplier'
-                and spp.payment_method = 'cash'
-                " . ($branchId == null ? "" : " and spp.branch_id = '$branchId'") . "
-                
+                /*================= Out Amount =======================*/                
                 UNION
                 select
                 'k' as sequence,

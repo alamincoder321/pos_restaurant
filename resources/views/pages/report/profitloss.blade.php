@@ -128,28 +128,8 @@
                                     <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="3" v-text="expenseincome.income"></td>
                                 </tr>
                                 <tr :class="selectedCustomer != null ? 'd-none' : ''" v-if="selectedCustomer == null">
-                                    <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="5">Sale Vat(+)</td>
-                                    <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="3" v-text="totalSaleVat"></td>
-                                </tr>
-                                <tr :class="selectedCustomer != null ? 'd-none' : ''" v-if="selectedCustomer == null">
-                                    <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="5">Sale Transport Cost(+)</td>
-                                    <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="3" v-text="totalSaleTransportcost"></td>
-                                </tr>
-                                <tr :class="selectedCustomer != null ? 'd-none' : ''" v-if="selectedCustomer == null">
-                                    <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="5">Purchase Discount(+)</td>
-                                    <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="3" v-text="expenseincome.purchase_discount"></td>
-                                </tr>
-                                <tr :class="selectedCustomer != null ? 'd-none' : ''" v-if="selectedCustomer == null">
                                     <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="5">Expense(-)</td>
                                     <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="3" v-text="expenseincome.expense"></td>
-                                </tr>
-                                <tr :class="selectedCustomer != null ? 'd-none' : ''" v-if="selectedCustomer == null">
-                                    <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="5">Purchase Vat(-)</td>
-                                    <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="3" v-text="expenseincome.purchase_vat"></td>
-                                </tr>
-                                <tr :class="selectedCustomer != null ? 'd-none' : ''" v-if="selectedCustomer == null">
-                                    <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="5">Purchase Transport Cost(-)</td>
-                                    <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="3" v-text="expenseincome.purchase_transport_cost"></td>
                                 </tr>
                                 <tr :class="selectedCustomer != null ? 'd-none' : ''" v-if="selectedCustomer == null">
                                     <td style="font-weight: 700;padding: 3px !important;" class="text-end" colspan="5">Sale Discount(-)</td>
@@ -220,19 +200,9 @@
                     return pre + parseFloat(cur.discount);
                 }, 0).toFixed(2);
             },
-            totalSaleVat() {
-                return this.sales.reduce((pre, cur) => {
-                    return pre + parseFloat(cur.vat);
-                }, 0).toFixed(2);
-            },
-            totalSaleTransportcost() {
-                return this.sales.reduce((pre, cur) => {
-                    return pre + parseFloat(cur.transport_cost);
-                }, 0).toFixed(2);
-            },
             netProfit() {
-                let totalIncome = parseFloat(this.totalSale) + parseFloat(this.expenseincome.income) + parseFloat(this.totalSaleVat) + parseFloat(this.expenseincome.purchase_discount) + parseFloat(this.totalSaleTransportcost);
-                let totalExpense = parseFloat(this.totalPurchase) + parseFloat(this.expenseincome.expense) + parseFloat(this.expenseincome.purchase_vat) + parseFloat(this.expenseincome.purchase_transport_cost) + parseFloat(this.totalSaleDiscount) + parseFloat(this.expenseincome.sale_return_amount) + parseFloat(this.expenseincome.salary_payment);
+                let totalIncome = parseFloat(this.totalSale) + parseFloat(this.expenseincome.income);
+                let totalExpense = parseFloat(this.totalPurchase) + parseFloat(this.expenseincome.expense) + parseFloat(this.totalSaleDiscount) + parseFloat(this.expenseincome.sale_return_amount) + parseFloat(this.expenseincome.salary_payment);
                 return (totalIncome - totalExpense).toFixed(2);
             }
         },

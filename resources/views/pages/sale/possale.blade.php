@@ -196,7 +196,7 @@
         </div>
     </div>
 
-    <div class="mt-1 col-md-6 col-12 pe-md-0">
+    <div class="mt-1 col-md-7 col-12 pe-md-0">
         <div class="card mb-0 shadow-none" style="padding-bottom:90px;height:480px;border: 1px solid gray;border-top-right-radius: 0 !important;border-bottom-right-radius: 0 !important;">
             <div class="card-header" style="padding: 7px 15px;">
                 <div class="row">
@@ -262,17 +262,16 @@
                         <div
                             class="card my-1 text-center"
                             :class="carts.some(c => c.id == product.id) ? 'border border-info' : ''"
-                            style="height: 125px;cursor:pointer; border-radius: 10px; padding: 10px 5px;border:1px solid #e7e7e7;"
+                            style="height: 150px;cursor:pointer; border-radius: 10px; padding: 10px 5px;border:1px solid #e7e7e7;"
                             @click="selectedMenu = product; addToCart()">
-                            <img :src="`/${product.image ? product.image : 'noImage.jpg'}`" alt="Product Image" style="width: 40px; height: 40px; object-fit: cover; margin: 0 auto; border-radius: 8px;">
+                            <img :src="`/${product.image ? product.image : 'noImage.jpg'}`" alt="Product Image" style="width: 90px; height: 78px; object-fit: cover; margin: 0 auto; border-radius: 8px;">
                             <div class="mt-2">
-                                <h6 style="font-size: 12px;" class="mb-1" :title="product.name">
+                                <h6 style="font-size: 12px;" class="mb-0" :title="product.name">
                                     <span v-if="product.name && product.name.length > 30" :title="product.name">
-                                        @{{ product.name.substring(0, 30) + '...' }}
+                                        @{{ product.name.substring(0, 40) + '...' }}
                                     </span>
                                     <span v-else v-text="product.name"></span>
                                 </h6>
-                                <p style="font-size: 11px; line-height: 1;" class="m-0" v-text="product.code"></p>
                                 <span class="badge bg-primary fs-7" v-if="product.sale_rate">
                                     ৳ @{{ product.sale_rate }}
                                 </span>
@@ -283,7 +282,7 @@
             </div>
         </div>
     </div>
-    <div class="mt-1 col-md-6 col-12 ps-md-0">
+    <div class="mt-1 col-md-5 col-12 ps-md-0">
         <div class="card mb-0 shadow-none" style="padding-bottom:90px;height:480px;border: 1px solid gray;border-top-left-radius: 0 !important;border-bottom-left-radius: 0 !important;">
             <div class="card-header" style="padding: 7px;padding-bottom:2px;">
                 <div class="row">
@@ -314,7 +313,6 @@
                         <tr>
                             <th>Sl</th>
                             <th style="width: 30%;">Description</th>
-                            <th>Category</th>
                             <th>Quantity</th>
                             <th>Rate</th>
                             <th>Total</th>
@@ -324,8 +322,7 @@
                     <tbody>
                         <tr v-for="(cart, index) in carts" :key="index" v-if="carts.length > 0" :class="carts.length > 0 ? '' : 'd-none'">
                             <td class="text-center" v-text="index + 1"></td>
-                            <td v-text="`${cart.name} - ${cart.code}`"></td>
-                            <td class="text-center" v-text="cart.category_name"></td>
+                            <td v-text="`${cart.name}`"></td>
                             <td class="text-center">
                                 <div class="input-group input-group-sm" style="width: 80px; margin: 0 auto;">
                                     <button style="padding: 0px 5px;" class="btn btn-outline-secondary" type="button" @click="cart.quantity = Math.max(1, +cart.quantity - 1); quantityRateTotal(cart)">
@@ -1018,6 +1015,7 @@
 
             saveData() {
                 this.sale.employee_id = this.selectedEmployee ? this.selectedEmployee.id : "";
+                this.sale.waiter_name = this.selectedEmployee ? this.selectedEmployee.name : "";
                 this.sale.table_id = this.selectedTable.length > 0 ? this.selectedTable.map(item => item).join(',') : null;
                 this.sale.table_name = this.tables.filter(item => this.selectedTable.includes(item.id)).map(item => item.name).join(', ');
                 let formdata = {
