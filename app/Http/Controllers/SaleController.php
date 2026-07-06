@@ -166,7 +166,7 @@ class SaleController extends Controller
             unset($dataKey->id);
             unset($dataKey->invoice);
             unset($dataKey->table_name);
-            unset($dataKey->waiter_name);
+            unset($dataKey->employee_name);
             $data = new Sale();
             $data->invoice = $invoice;
             $data->employee_id = $sale->employee_id ?? NULL;
@@ -266,7 +266,7 @@ class SaleController extends Controller
             $dataKey = $sale;
             unset($dataKey->invoice);
             unset($dataKey->table_name);
-            unset($dataKey->waiter_name);
+            unset($dataKey->employee_name);
             $data = Sale::find($sale->id);
             $data->employee_id = $sale->employee_id ?? NULL;
             foreach ($dataKey as $key => $value) {

@@ -13,7 +13,7 @@ Vue.component('kitchen-invoice-preview', {
           <strong style="font-size: 15px;">Inv.: </strong> <span style="font-size: 13px;" v-text="sale.invoice"></span><br>
           <strong style="font-size: 14px;">Customer ID: </strong> <span style="font-size: 13px;" v-text="customer.code ? customer.code : 'Walk-In Customer'"></span><br>
           <span v-if="customer.name != 'Walk In Customer'" style="font-size: 13px;" v-text="customer.name"> <br></span>
-          <strong style="font-size: 15px;">Waiter: </strong> <span style="font-size: 13px;" v-html="sale.waiter_name"></span><br>
+          <strong style="font-size: 15px;">Waiter: </strong> <span style="font-size: 13px;" v-html="sale.employee_name"></span><br>
           <strong style="font-size: 15px;">Table: </strong> <span style="font-size: 13px;" v-html="sale.table_name"></span>
         </div>
       </div>
@@ -35,7 +35,7 @@ Vue.component('kitchen-invoice-preview', {
             <template v-for="(item, index) in cart">
                 <tr>
                     <td class="text-center">{{ index + 1 }}</td>
-                    <td> {{ item.name }}-{{ item.code }} </td>
+                    <td> {{ item.name }} </td>
                     <td class="text-center">{{ item.quantity }} {{item.unit_name }}</td>
                 </tr>
             </template>

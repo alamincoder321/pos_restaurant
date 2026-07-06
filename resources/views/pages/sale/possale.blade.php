@@ -635,26 +635,6 @@
                     toastr.error("Cart is empty");
                     return;
                 }
-                if(this.checkStock == 'yes'){
-                    for (const item of this.carts) {
-                        try {
-                            if (item.is_service != '1') {
-                                const res = await axios.post('/get-currentStock', {
-                                    productId: item.id
-                                });
-                                let stock = res.data.length > 0 ? res.data[0].stock : 0;
-    
-                                if (parseFloat(item.quantity) > parseFloat(stock)) {
-                                    toastr.error(`Unavailable stock for this product: ${item.name}`);
-                                    return;
-                                }
-                            }
-                        } catch (error) {
-                            toastr.error(`Error checking stock for ${item.name}`);
-                            return;
-                        }
-                    }
-                }
                 let saleId = await this.saveData();
                 
                 const mediaQuery = window.matchMedia("(min-width: 300px) and (max-width: 1366px)");
@@ -826,8 +806,7 @@
                         purchase_rate: this.selectedMenu.purchase_rate,
                         sale_rate: this.selectedMenu.sale_rate,
                         quantity: 1,
-                        total: parseFloat(this.selectedMenu.sale_rate * 1).toFixed(2),
-                        is_service: this.selectedMenu.is_service
+                        total: parseFloat(this.selectedMenu.sale_rate * 1).toFixed(2)
                     })
                 }
                 this.clearProduct();
@@ -856,8 +835,7 @@
                         purchase_rate: this.selectedMenu.purchase_rate,
                         sale_rate: this.selectedMenu.sale_rate,
                         quantity: 1,
-                        total: parseFloat(this.selectedMenu.sale_rate * 1).toFixed(2),
-                        is_service: this.selectedMenu.is_service
+                        total: parseFloat(this.selectedMenu.sale_rate * 1).toFixed(2)
                     })
                 }
                 this.clearProduct();
@@ -866,22 +844,11 @@
 
             async quantityRateTotal(cart) {
                 var stock = 0;
-                if (cart.is_service == 0) {
-                    stock = await axios.post('/get-currentStock', {
-                        productId: cart.id
-                    }).then(res => {
-                        return res.data.length > 0 ? res.data[0].stock : 0;
-                    });
-                }
 
                 this.carts = this.carts.map(item => {
                     if (item.id === cart.id) {
                         if (item.quantity == '') {
                             item.quantity = 1;
-                        }
-                        if ((parseFloat(item.quantity) > parseFloat(stock)) && item.is_service == 0) {
-                            toastr.error('Stock is unavailable');
-                            item.quantity = stock;
                         }
                         item.total = parseFloat(item.sale_rate * item.quantity).toFixed(2);
                     }
@@ -1015,7 +982,7 @@
 
             saveData() {
                 this.sale.employee_id = this.selectedEmployee ? this.selectedEmployee.id : "";
-                this.sale.waiter_name = this.selectedEmployee ? this.selectedEmployee.name : "";
+                this.sale.employee_name = this.selectedEmployee ? this.selectedEmployee.name : "";
                 this.sale.table_id = this.selectedTable.length > 0 ? this.selectedTable.map(item => item).join(',') : null;
                 this.sale.table_name = this.tables.filter(item => this.selectedTable.includes(item.id)).map(item => item.name).join(', ');
                 let formdata = {
