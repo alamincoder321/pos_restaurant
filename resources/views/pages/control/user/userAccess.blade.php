@@ -81,6 +81,14 @@
                 </tr>
                 <tr class="sales">
                     <td>
+                        <label for="pendingsaleRecord">
+                            <input type="checkbox" id="pendingsaleRecord" value="pendingsaleRecord" v-model="useraccess" />
+                            <span>Pending Order Record</span>
+                        </label>
+                    </td>
+                </tr>
+                <tr class="sales">
+                    <td>
                         <label for="saleRecord">
                             <input type="checkbox" id="saleRecord" value="saleRecord" v-model="useraccess" />
                             <span>Order Record</span>

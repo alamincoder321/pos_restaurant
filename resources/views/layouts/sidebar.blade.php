@@ -67,7 +67,7 @@ $panel = session('panel');
                 <span>Order Panel</span>
             </a>
         </li>
-        @if(checkAccess('pos'))
+        @if(checkAccess('sale'))
         <li class="nav-item">
             <a class="nav-link {{Request::is('pos') ? 'active' : ''}}" href="/pos">
                 <i class="bi bi-cart-dash"></i>
