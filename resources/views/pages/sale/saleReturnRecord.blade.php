@@ -141,8 +141,12 @@
                                         <td v-html="item.details[0].total" class="text-end"></td>
                                         <td class="text-center">
                                             <i class="bi bi-file-earmark-medical-fill text-secondary" style="cursor: pointer;font-size:14px"></i>
+                                            @if (buttonAction('update'))
                                             <!-- <i @click="editSale(item.id)" class="bi bi-pencil-square text-info" style="cursor: pointer;"></i> -->
+                                            @endif
+                                            @if (buttonAction('delete'))
                                             <i @click="deleteData(item.id)" class="bi bi-trash3 text-danger" style="cursor: pointer;"></i>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr v-for="(product, ind) in item.details.slice(1)" v-show="item.details.length > 1">

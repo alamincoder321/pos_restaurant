@@ -119,10 +119,12 @@
                                         <strong v-text="salary.amount"></strong>
                                     </td>
                                     <td colspan="3" class="text-end py-2">
+                                        @if (buttonAction('entry') || buttonAction('update'))
                                         <button @click="saveSalary" class="btn btn-sm btn-primary" type="button" :disabled="onProgress">
                                             <span v-if="salary.salary_id == ''">Save</span>
                                             <span v-if="salary.salary_id != ''">Update</span>
                                         </button>
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr :class="salaries.length == 0 ? '' : 'd-none'" v-if="salaries.length == 0">

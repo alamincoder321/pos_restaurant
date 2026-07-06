@@ -45,7 +45,7 @@ class DesignationtController extends Controller
         $validator = Validator::make($request->all(), [
             'name'     => [
                 'required',
-                Rule::unique('Designations')
+                Rule::unique('designations')
                     ->where(function ($query) use ($branchId) {
                         $query->where('branch_id', $branchId);
                     })
@@ -84,7 +84,7 @@ class DesignationtController extends Controller
         $validator = Validator::make($request->all(), [
             'name'     => [
                 'required',
-                Rule::unique('Designations')
+                Rule::unique('designations')
                     ->ignore($request->id)
                     ->where(function ($query) use ($branchId) {
                         $query->where('branch_id', $branchId);

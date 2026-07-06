@@ -23,7 +23,7 @@
         <div class="card mb-0">
             <div class="card-body">
                 <h5 class="card-title">Customer Entry Form</h5>
-                <form @submit.prevent="saveData($event)">
+                <form @submit.prevent="{{ buttonAction('entry') || buttonAction('update') ? 'saveData($event)' : null }}">
                     <div class="row">
                         <div class="col-12 col-md-5">
                             <div class="mb-1 row">
@@ -75,11 +75,13 @@
                                     </label>
                                 </div>
                                 <div class="col-md-6 col-12 text-end">
+                                    @if (buttonAction('entry') || buttonAction('update'))
                                     <button class="btn btn-danger" type="button">Reset</button>
                                     <button class="btn btn-primary" type="submit" :disabled="onProgress">
                                         <span v-if="customer.id == ''">Save</span>
                                         <span v-if="customer.id != ''">Update</span>
                                     </button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -135,12 +137,16 @@
                         <td>@{{ row.ad_user?.name }}</td>
                         <td>@{{ row.up_user?.name }}</td>
                         <td>
+                            @if (buttonAction('update'))
                             <a href="" title="edit" @click.prevent="editData(row)">
                                 <i class="bi bi-pen text-info" style="font-size: 14px;"></i>
                             </a>
+                            @endif
+                            @if (buttonAction('delete'))
                             <a href="" title="delete" @click.prevent="deleteData(row.id)">
                                 <i class="bi bi-trash text-danger" style="font-size: 14px;"></i>
                             </a>
+                            @endif
                         </td>
                     </tr>
                     <tr style="display: none;" :style="{display: customers.length == 0 ? '' : 'none'}" v-if="customers.length == 0">

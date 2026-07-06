@@ -8,7 +8,7 @@
         <div class="card mb-0">
             <div class="card-body">
                 <h5 class="card-title">Employee Entry Form</h5>
-                <form @submit.prevent="saveData($event)">
+                <form @submit.prevent="{{ buttonAction('entry') || buttonAction('update') ? 'saveData($event)' : null }}">
                     <div class="row">
                         <div class="col-12 col-md-5">
                             <div class="mb-1 row">
@@ -133,11 +133,13 @@
                                     </label>
                                 </div>
                                 <div class="col-md-6 col-12 text-end">
+                                    @if (buttonAction('entry') || buttonAction('update'))
                                     <button class="btn btn-danger" type="button">Reset</button>
                                     <button class="btn btn-primary" type="submit" :disabled="onProgress">
                                         <span v-if="employee.id == ''">Save</span>
                                         <span v-if="employee.id != ''">Update</span>
                                     </button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -162,12 +164,16 @@
             }" :search-options="{ enabled: true }" :line-numbers="true" styleClass="vgt-table condensed" max-height="550px">
             <template #table-row="props">
                 <span class="d-flex gap-2 justify-content-end" v-if="props.column.field == 'before'">
+                    @if (buttonAction('update'))
                     <a href="" title="edit" @click.prevent="editData(props.row)">
                         <i class="bi bi-pen text-info" style="font-size: 14px;"></i>
                     </a>
+                    @endif
+                    @if (buttonAction('delete'))
                     <a href="" title="delete" @click.prevent="deleteData(props.row.id)">
                         <i class="bi bi-trash text-danger" style="font-size: 14px;"></i>
                     </a>
+                    @endif
                 </span>
             </template>
         </vue-good-table>

@@ -23,7 +23,7 @@
         <div class="card mb-0">
             <div class="card-body">
                 <h5 class="card-title">Menu Entry Form</h5>
-                <form @submit.prevent="saveData($event)">
+                <form @submit.prevent="{{ buttonAction('entry') || buttonAction('update') ? 'saveData($event)' : null }}">
                     <div class="row">
                         <div class="col-12 col-md-5">
                             <div class="mb-1 row">
@@ -79,11 +79,13 @@
                                     </label>
                                 </div>
                                 <div class="col-md-6 col-12 text-end">
+                                    @if (buttonAction('entry') || buttonAction('update'))
                                     <button class="btn btn-danger" type="button">Reset</button>
                                     <button class="btn btn-primary" type="submit" :disabled="onProgress">
                                         <span v-if="menu.id == ''">Save</span>
                                         <span v-if="menu.id != ''">Update</span>
                                     </button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -138,12 +140,16 @@
                             <a :href="`/barcode/${row.id}`" title="barcode">
                                 <i class="bi bi-upc-scan text-warning" style="font-size: 14px;margin-right: 5px;"></i>
                             </a>
+                            @if (buttonAction('update'))
                             <a href="" title="edit" @click.prevent="editData(row)">
                                 <i class="bi bi-pen text-info" style="font-size: 14px;"></i>
                             </a>
+                            @endif
+                            @if (buttonAction('delete'))
                             <a href="" title="delete" @click.prevent="deleteData(row.id)">
                                 <i class="bi bi-trash text-danger" style="font-size: 14px;"></i>
                             </a>
+                            @endif
                         </td>
                     </tr>
                 </tbody>
