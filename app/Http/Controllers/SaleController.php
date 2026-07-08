@@ -413,7 +413,7 @@ class SaleController extends Controller
 
     public function pendingSaleRecord()
     {
-        if (!checkAccess('pendingSaleRecord')) {
+        if (!checkAccess('pendingsaleRecord')) {
             return view('error.403');
         }
         return view("pages.sale.pendingsale");
