@@ -202,6 +202,14 @@
                 </tr>
                 <tr class="accounts">
                     <td>
+                        <label for="record">
+                            <input type="checkbox" id="record" value="record" v-model="useraccess" />
+                            <span>Expense & Income Record</span>
+                        </label>
+                    </td>
+                </tr>
+                <tr class="accounts">
+                    <td>
                         <label for="receive">
                             <input type="checkbox" id="receive" value="receive" v-model="useraccess" />
                             <span>Receive</span>
