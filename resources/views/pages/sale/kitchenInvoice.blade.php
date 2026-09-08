@@ -11,7 +11,10 @@
 </style>
 @endpush
 @section('content')
-<div id="saleInvoice">
+<div id="kitchenInvoice">
+    <div class="col-md-10 offset-md-1 text-end mb-2">
+        <button @click="printInvoice = true" class="btn btn-warning text-white">Print</button>
+    </div>
     <div class="col-md-10 offset-md-1">
         <kitchen-invoice-preview
             :visible="printInvoice"
@@ -26,10 +29,10 @@
 @endsection
 
 @push('js')
-<script src="{{asset('component')}}/KitchenInvoicePreview.js"></script>
+<script src="{{asset('component')}}/KitchenSaleInvoicePreview.js"></script>
 <script>
     new Vue({
-        el: '#saleInvoice',
+        el: '#kitchenInvoice',
         data: {
             saleId: "{{$id}}",
             sale: {},

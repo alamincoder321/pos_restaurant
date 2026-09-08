@@ -498,7 +498,7 @@
     <kitchen-invoice-preview
         :visible="showInvoice"
         :showable="showInvoice"
-        :cart="carts"
+        :cart="invoiceCarts"
         :customer="selectedCustomer"
         :sale="sale"
         :username="username"
@@ -565,6 +565,7 @@
                     amount: ''
                 },
                 carts: [],
+                invoiceCarts: [],
                 bankCart: [],
                 stock: 0,
                 barcodeInput: '',
@@ -636,7 +637,7 @@
                     return;
                 }
                 let saleId = await this.saveData();
-                
+
                 const mediaQuery = window.matchMedia("(min-width: 300px) and (max-width: 1366px)");
                 if (!mediaQuery.matches) {
                     this.showInvoice = true;
@@ -980,7 +981,8 @@
                 };
             },
 
-            saveData() {
+            async saveData() {
+                let saleId = 0;
                 this.sale.employee_id = this.selectedEmployee ? this.selectedEmployee.id : "";
                 this.sale.employee_name = this.selectedEmployee ? this.selectedEmployee.name : "";
                 this.sale.table_id = this.selectedTable.length > 0 ? this.selectedTable.map(item => item).join(',') : null;
@@ -991,13 +993,15 @@
                     carts: this.carts.filter(item => item.quantity > 0),
                     bankCart: this.bankCart,
                 }
+                this.invoiceCarts = this.carts.filter(item => item.quantity > 0);
                 let url = this.sale.id != '' ? '/update-sale' : '/sale'
                 this.onProgress = true;
-                axios.post(url, formdata)
+                await axios.post(url, formdata)
                     .then(async res => {
                         toastr.success(res.data.message);
                         this.clearData();
                         this.sale.invoice = res.data.invoice;
+                        saleId = res.data.saleId;
                         history.pushState(null, '', '/pos');
                     })
                     .catch(err => {
@@ -1018,6 +1022,8 @@
                             toastr.error(r.message)
                         }
                     })
+
+                return saleId;
 
             },
             clearData() {
