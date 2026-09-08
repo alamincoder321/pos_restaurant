@@ -204,6 +204,18 @@ $panel = session('panel');
                 </a>
             </div>
             @endif
+            @if(checkAccess('record'))
+            <div class="col-md-2 col-6 mb-3">
+                <a href="/transaction-record">
+                    <div class="card mb-0 displayFlex">
+                        <div class="card-body p-3">
+                            <i class="bi bi-list"></i>
+                            <span>Expense & Income Record</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endif
             @if(checkAccess('receive'))
             <div class="col-md-2 col-6 mb-3">
                 <a href="/receive">

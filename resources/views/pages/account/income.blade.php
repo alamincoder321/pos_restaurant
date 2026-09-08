@@ -104,10 +104,6 @@
                         field: 'account.name'
                     },
                     {
-                        label: "AccountType",
-                        field: 'type'
-                    },
-                    {
                         label: "Amount",
                         field: 'amount'
                     },

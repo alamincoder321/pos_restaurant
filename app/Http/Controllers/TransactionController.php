@@ -56,6 +56,14 @@ class TransactionController extends Controller
         }
         return view('pages.account.income');
     }
+    
+    public function record()
+    {
+        if (!checkAccess('record')) {
+            return view('error.403');
+        }
+        return view('pages.account.record');
+    }
 
 
     public function store(Request $request)

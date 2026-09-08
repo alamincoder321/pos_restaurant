@@ -104,6 +104,10 @@
     min-width: 160px;
 }
 
+.form-inline .v-select {
+    width: 220px;
+}
+
 /* image show style */
 
 .ImageBackground {

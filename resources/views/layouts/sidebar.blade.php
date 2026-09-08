@@ -145,6 +145,14 @@ $panel = session('panel');
             </a>
         </li>
         @endif
+        @if(checkAccess('record'))
+        <li class="nav-item">
+            <a class="nav-link {{Request::is('transaction-record') ? 'active' : ''}}" href="/transaction-record">
+                <i class="bi bi-list"></i>
+                <span>Expense & Income Record</span>
+            </a>
+        </li>
+        @endif
         @if(checkAccess('receive'))
         <li class="nav-item">
             <a class="nav-link {{Request::is('receive') ? 'active' : ''}}" href="/receive">

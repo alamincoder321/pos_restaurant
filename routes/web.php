@@ -206,6 +206,7 @@ Route::post('/get-bankBalance', [BankController::class, 'getBankBalance'])->name
 // expense route
 Route::get('/expense', [TransactionController::class, 'expense'])->name('expense.create');
 Route::get('/income', [TransactionController::class, 'income'])->name('income.create');
+Route::get('/transaction-record', [TransactionController::class, 'record'])->name('transaction.record');
 Route::match(['get', 'post'], '/get-transaction', [TransactionController::class, 'index'])->name('transaction.index');
 Route::post('/transaction', [TransactionController::class, 'store'])->name('transaction.store');
 Route::post('/update-transaction', [TransactionController::class, 'update'])->name('transaction.update');
