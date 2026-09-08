@@ -82,6 +82,10 @@ Vue.component('pos-invoice-preview', {
               <td colspan="3" style="font-weight: 700;text-align:right;">BankPaid</td>
               <td colspan="2" class="text-end" style="font-weight: 700;" v-text="sale.bankPaid"></td>
             </tr>
+            <tr v-if="sale.returnAmount > 0">
+              <td colspan="3" style="font-weight: 700;text-align:right;">Change</td>
+              <td colspan="2" class="text-end" style="font-weight: 700;" v-text="sale.returnAmount"></td>
+            </tr>
             <tr style="border-bottom: none;">
               <td colspan="3" style="font-weight: 700;text-align:right;border-bottom: 1px solid #ccc;border-left: 1px solid #ccc:">Due</td>
               <td colspan="2" class="text-end" style="font-weight: 700;border-bottom: 1px solid #ccc;border-left: 1px solid #ccc:border-right: 1px solid #ccc;" v-text="sale.due"></td>

@@ -91,6 +91,7 @@
                                     <th>CashPaid</th>
                                     <th>BankPaid</th>
                                     <th>Paid</th>
+                                    <th>Change</th>
                                     <th>Due</th>
                                     <th>Status</th>
                                     <th>Action</th>
@@ -109,6 +110,7 @@
                                     <td v-html="item.cashPaid" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
                                     <td v-html="item.bankPaid" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
                                     <td v-html="item.paid" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
+                                    <td v-html="item.returnAmount" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
                                     <td v-html="item.due" class="text-end" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''"></td>
                                     <td class="text-center" :class="item.order_status == 'cancelled' ? 'bg-warning text-white' : ''">
                                         <span
@@ -133,12 +135,13 @@
                                     <th v-html="sales.reduce((pr, cu) => {return pr + parseFloat(cu.cashPaid)}, 0).toFixed(2)" class="text-end"></th>
                                     <th v-html="sales.reduce((pr, cu) => {return pr + parseFloat(cu.bankPaid)}, 0).toFixed(2)" class="text-end"></th>
                                     <th v-html="sales.reduce((pr, cu) => {return pr + parseFloat(cu.paid)}, 0).toFixed(2)" class="text-end"></th>
+                                    <th v-html="sales.reduce((pr, cu) => {return pr + parseFloat(cu.returnAmount)}, 0).toFixed(2)" class="text-end"></th>
                                     <th v-html="sales.reduce((pr, cu) => {return pr + parseFloat(cu.due)}, 0).toFixed(2)" class="text-end"></th>
                                     <th></th>
                                     <th></th>
                                 </tr>
                                 <tr :class="sales.length == 0 ? '' : 'd-none'" v-if="sales.length == 0">
-                                    <td colspan="14" class="text-center">Not Found Data</td>
+                                    <td colspan="15" class="text-center">Not Found Data</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -237,7 +240,7 @@
         methods: {
             openInvoice(id) {
                 if (typeof window !== 'undefined') {
-                    window.open(`/saleInvoice/${id}`, '_blank');
+                    location.href = `/possaleInvoice/${id}?print=1`;
                 }
             },
             editSale(id) {
